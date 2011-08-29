@@ -1,0 +1,26 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui"
+    xmlns:my='urn:import:com.pgu.client'>
+
+    <ui:style src="Planning.css">
+        
+    </ui:style>
+    <g:HTMLPanel>
+
+        <g:Label styleName="{style.title}">Title</g:Label>
+
+            <my:ToolbarTasks ui:field="toolbarTasks"></my:ToolbarTasks>
+
+            <g:HorizontalPanel styleName="{style.hpStyle}">
+                <g:ScrollPanel styleName="{style.scrollPersons}">
+                    <g:FlexTable ui:field="tablePersons">
+                    </g:FlexTable>
+                </g:ScrollPanel>
+                <g:ScrollPanel ui:field="scrollHours" styleName="{style.scrollHours}">
+                    <g:FlexTable ui:field="tableHours">
+                    </g:FlexTable>
+                </g:ScrollPanel>
+            </g:HorizontalPanel>
+        <g:HTML ui:field="logText"></g:HTML>
+    </g:HTMLPanel>
+</ui:UiBinder> 

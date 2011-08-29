@@ -1,0 +1,25 @@
+.title {
+    font-size: 24px;
+}
+
+.hpStyle {
+    cellSpacing: 5px;
+    margin-top: 20px;
+}
+
+.scrollPersons {
+    width: 100px;
+}
+
+.tablePersons {
+    width: 100%;
+}
+
+.scrollHours {
+    width: 1000px;
+}
+
+.tableHours {
+    width: 100%;
+}
+
