@@ -1,0 +1,11 @@
+.project
+.classpath
+.settings/
+.gwt/
+.settings/com.google.gwt.eclipse.core.prefs
+war/WEB-INF/classes/
+war/WEB-INF/lib/
+war/WEB-INF/deploy/
+war/zz_planning_grid/
+
+
