@@ -285,6 +285,7 @@ public class PlanningGrid extends Composite {
         planningDragController.setBehaviorScrollIntoView(true);
         planningDragController.setBehaviorConstrainedToBoundaryPanel(true);
         planningDragController.addDragHandler(new DemoDragHandler(logText, planningDragController));
+        planningDragController.setBehaviorDragStartSensitivity(1);
 
         planningDragController.unregisterDropControllers();
         planningDragController.registerDropController(new MoveTaskInRowDropController(container, this));
@@ -300,10 +301,14 @@ public class PlanningGrid extends Composite {
     //////////////////////////////////////////////////////////////////////////////////////
 
     public Integer searchColTask(final DragContext context) {
+        return searchColTask(context, null);
+    }
+
+    public Integer searchColTask(final DragContext context, final Integer X) {
 
         int low = 0;
         int high = ruler_5min.getCellCount(PlanningGrid.ROW_RULER_HOURS) - 1;
-        final int mX = context.mouseX;
+        final int mX = null != X ? X : context.mouseX;
 
         while (low <= high) {
             final int mid = low + high >>> 1;

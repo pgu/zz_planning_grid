@@ -37,7 +37,7 @@ public class MoveTaskInRowDropController extends SimpleDropController {
             return;
         }
 
-        final Integer colTask = planningGrid.searchColTask(context);
+        final Integer colTask = planningGrid.searchColTask(context, currentTask.getAbsoluteLeft());
         if (colTask == null) {
             planningGrid.restoreTask(context, currentTask);
             return;

@@ -1,6 +1,15 @@
 package com.pgu.client;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class TaskPlanning extends HTML {
 
@@ -19,6 +28,53 @@ public class TaskPlanning extends HTML {
         this.perimetre = perimetre;
         setColors();
         showLabel();
+        setClickHandler();
+    }
+
+    private void setClickHandler() {
+        addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(final ClickEvent event) {
+                final PopupPanel pop = new PopupPanel(false, true);
+                final VerticalPanel container = new VerticalPanel();
+                pop.add(container);
+                container.add(new Label("Modifier la durée (en minutes): "));
+                final TextBox inputDuree = new TextBox();
+                container.add(inputDuree);
+                inputDuree.setText(durationInMinutes + "");
+
+                final Button btnConfirm = new Button("Confirm");
+                container.add(btnConfirm);
+                final Button btnSuppression = new Button("Supprimer la tâche");
+                container.add(btnSuppression);
+
+                pop.show();
+                pop.center();
+
+                btnConfirm.addClickHandler(new ClickHandler() {
+
+                    @Override
+                    public void onClick(final ClickEvent event) {
+                        // TODO PGU modifier la cell, check it does not overlap
+                        pop.hide();
+                    }
+                });
+                btnSuppression.addClickHandler(new ClickHandler() {
+
+                    @Override
+                    public void onClick(final ClickEvent event) {
+                        final boolean isSure = Window.confirm("Are you sure?");
+                        if (isSure) {
+                            GWT.log("is sure " + isSure);
+                            // TODO PGU delete the tache and remove it from the priority queue
+                        }
+                        pop.hide();
+                    }
+                });
+
+            }
+        });
     }
 
     private void setColors() {
