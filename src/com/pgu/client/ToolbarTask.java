@@ -37,6 +37,8 @@ public class ToolbarTask extends AbsolutePanel implements HasDragHandle {
         checkBgColor(bgColor);
         this.bgColor = bgColor;
 
+        //        getElement().getStyle().setPosition(Position.RELATIVE);
+
         TaskToolbarPlanningResources.INSTANCE.css().ensureInjected();
 
         shim.addStyleName("demo-PaletteWidget-shim");

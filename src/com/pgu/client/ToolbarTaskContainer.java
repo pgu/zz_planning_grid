@@ -1,5 +1,9 @@
 package com.pgu.client;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -44,9 +48,33 @@ public class ToolbarTaskContainer extends DialogBox {
 
         setClickManuelles();
         setClickRestantes();
+
     }
 
     private void setClickRestantes() {
+        btnRestantes.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(final ClickEvent event) {
+                if (btnRestantes.isDown()) {
+                    containerTasks.clear();
+                    btnManuelles.setDown(false);
+
+                    if (!taskRestantes.isEmpty()) {
+
+                        final ToolbarTasks tasks = new ToolbarTasks(logText);
+                        for (final Entry<String, String> e : taskRestantes.entrySet()) {
+                            tasks.add(new ToolbarTask(e.getKey(), e.getValue()));
+                        }
+
+                        planningGrid.setDropControllerFromTaskRestantes(tasks);
+                        containerTasks.add(tasks);
+                    }
+                } else {
+                    containerTasks.clear();
+                }
+            }
+        });
     }
 
     private void setClickManuelles() {
@@ -56,14 +84,42 @@ public class ToolbarTaskContainer extends DialogBox {
             public void onClick(final ClickEvent event) {
                 if (btnManuelles.isDown()) {
                     containerTasks.clear();
-                    final ToolbarTasks tasks = new ToolbarTasks(logText);
-                    planningGrid.setDropControllerFromTasks(tasks.dragController);
-                    containerTasks.add(tasks);
+                    btnRestantes.setDown(false);
+
+                    if (!taskManuelles.isEmpty()) {
+                        final ToolbarTasks tasks = new ToolbarTasks(logText);
+                        for (final Entry<String, String> e : taskManuelles.entrySet()) {
+                            tasks.add(new ToolbarTask(e.getKey(), e.getValue()));
+                        }
+
+                        planningGrid.setDropControllerFromTaskDuJours(tasks.dragController);
+                        containerTasks.add(tasks);
+                    }
                 } else {
                     containerTasks.clear();
                 }
             }
         });
+    }
+
+    public void cleanTaskRestantesAfterSuccessfulDrop() {
+        if (btnRestantes.isDown()) {
+            final ToolbarTasks tt = (ToolbarTasks) containerTasks.getWidget(0);
+            taskRestantes.remove(tt.cleanAfterSuccessfulDrop());
+        }
+    }
+
+    final Map<String, String> taskRestantes = new LinkedHashMap<String, String>();
+    final Map<String, String> taskManuelles = new LinkedHashMap<String, String>();
+
+    public void setTaskRestantes(final Map<String, String> taskRestantes) {
+        this.taskRestantes.clear();
+        this.taskRestantes.putAll(taskRestantes);
+    }
+
+    public void setTaskManuelles(final Map<String, String> taskManuelles) {
+        this.taskManuelles.clear();
+        this.taskManuelles.putAll(taskManuelles);
     }
 
 }

@@ -1,7 +1,9 @@
 package com.pgu.client;
 
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.google.gwt.core.client.EntryPoint;
@@ -84,7 +86,22 @@ public class Zz_planning_grid implements EntryPoint {
         pg.setHourMarkers();
         pg.setPersonMarkers();
 
+        final Map<String, String> taskRestantes = new LinkedHashMap<String, String>();
+        taskRestantes.put("Inventaire", "#CC00CC");
+        taskRestantes.put("Montage", "#CCFFCC");
+
+        final Map<String, String> taskDuJours = new LinkedHashMap<String, String>();
+        taskDuJours.put("Audit de prix", "#009900");
+        taskDuJours.put("Inventaire tournant", "#0099FF");
+        taskDuJours.put("Montage TG", "#AAAAAA");
+        taskDuJours.put("Pose des labels", "#FF9900");
+        taskDuJours.put("Réimplantation", "#000000");
+
         final ToolbarTaskContainer tasksPanel = new ToolbarTaskContainer(logText, pg);
+        pg.setToolbarTaskContainer(tasksPanel);
+
+        tasksPanel.setTaskRestantes(taskRestantes);
+        tasksPanel.setTaskManuelles(taskDuJours);
         tasksPanel.show();
     }
 }

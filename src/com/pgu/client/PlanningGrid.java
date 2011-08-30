@@ -289,7 +289,7 @@ public class PlanningGrid extends Composite {
     Map<Person, Integer> person2rowTask = new HashMap<Person, Integer>();
     List<Person> persons = new ArrayList<Person>();
 
-    public void setDropControllerFromTasks(final PickupDragController dragController) {
+    public void setDropControllerFromTaskDuJours(final PickupDragController dragController) {
 
         dragController.unregisterDropControllers();
 
@@ -431,6 +431,8 @@ public class PlanningGrid extends Composite {
 
         ////////////////////////////////////////////////////////////////////////////////
         addTaskToPersonTasks(task);
+
+        toolbarTaskContainer.cleanTaskRestantesAfterSuccessfulDrop();
     }
 
     private void addTaskToPersonTasks(final TaskPlanning task) {
@@ -544,5 +546,20 @@ public class PlanningGrid extends Composite {
     public void removeTask(final TaskPlanning task) {
         removeTaskFromPersonTasks(task);
         task.removeFromParent();
+    }
+
+    public void setDropControllerFromTaskRestantes(final ToolbarTasks ttasks) {
+        ttasks.dragController.unregisterDropControllers();
+
+        final DropTaskInPlanningFromToolbarDropController dropTaskIntoPlanningController = new DropTaskInPlanningFromToolbarDropController(
+                contour, this);
+        ttasks.dragController.registerDropController(dropTaskIntoPlanningController);
+
+    }
+
+    ToolbarTaskContainer toolbarTaskContainer;
+
+    public void setToolbarTaskContainer(final ToolbarTaskContainer tasksPanel) {
+        toolbarTaskContainer = tasksPanel;
     }
 }
