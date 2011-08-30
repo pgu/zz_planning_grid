@@ -47,6 +47,7 @@ public class PlanningGrid extends Composite {
 
     HTML logText;
     FlowPanel contour = new FlowPanel();
+    private final PickupDragController planningDragController;
 
     public PlanningGrid(final List<Person> persons, final HTML logText) {
         this.logText = logText;
@@ -106,6 +107,17 @@ public class PlanningGrid extends Composite {
         }
 
         // /////////////////////////
+
+        planningDragController = new PickupDragController(container, true);
+        planningDragController.setBehaviorMultipleSelection(false);
+        planningDragController.setBehaviorDragProxy(false);
+        planningDragController.setBehaviorScrollIntoView(true);
+        planningDragController.setBehaviorConstrainedToBoundaryPanel(true);
+        planningDragController.addDragHandler(new DemoDragHandler(logText, planningDragController));
+        planningDragController.setBehaviorDragStartSensitivity(1);
+
+        planningDragController.unregisterDropControllers();
+        planningDragController.registerDropController(new MoveTaskInRowDropController(container, this));
 
     }
 
@@ -277,20 +289,7 @@ public class PlanningGrid extends Composite {
     Map<Person, Integer> person2rowTask = new HashMap<Person, Integer>();
     List<Person> persons = new ArrayList<Person>();
 
-    private PickupDragController planningDragController;
-
     public void setDropControllerFromTasks(final PickupDragController dragController) {
-
-        planningDragController = new PickupDragController(container, true);
-        planningDragController.setBehaviorMultipleSelection(false);
-        planningDragController.setBehaviorDragProxy(false);
-        planningDragController.setBehaviorScrollIntoView(true);
-        planningDragController.setBehaviorConstrainedToBoundaryPanel(true);
-        planningDragController.addDragHandler(new DemoDragHandler(logText, planningDragController));
-        planningDragController.setBehaviorDragStartSensitivity(1);
-
-        planningDragController.unregisterDropControllers();
-        planningDragController.registerDropController(new MoveTaskInRowDropController(container, this));
 
         dragController.unregisterDropControllers();
 
@@ -540,5 +539,10 @@ public class PlanningGrid extends Composite {
                 task.getColTask() + task.getDurationInMinutes() / 5);
 
         task.getElement().getStyle().setWidth(tdHourEnd.getAbsoluteLeft() - tdHour.getAbsoluteLeft(), Unit.PX);
+    }
+
+    public void removeTask(final TaskPlanning task) {
+        removeTaskFromPersonTasks(task);
+        task.removeFromParent();
     }
 }

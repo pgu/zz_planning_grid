@@ -7,8 +7,8 @@ import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.FocusPanel;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class ToolbarTask extends AbsolutePanel implements HasDragHandle {
@@ -47,7 +47,7 @@ public class ToolbarTask extends AbsolutePanel implements HasDragHandle {
         color.addStyleName(TaskToolbarPlanningResources.INSTANCE.css().colorTaskToolbar());
         color.getElement().getStyle().setBackgroundColor(bgColor);
 
-        final VerticalPanel vp = new VerticalPanel();
+        final HorizontalPanel vp = new HorizontalPanel();
         vp.add(color);
         vp.add(label);
 

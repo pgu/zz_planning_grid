@@ -1,6 +1,5 @@
 package com.pgu.client;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -26,8 +25,14 @@ public class TaskPlanningActions extends PopupPanel {
     PlanningGrid planningGrid;
 
     public TaskPlanningActions(final PlanningGrid planningGrid) {
-        super(true, false);
+        super();
         this.planningGrid = planningGrid;
+
+        setAnimationEnabled(true);
+        setAutoHideEnabled(false);
+        setAutoHideOnHistoryEventsEnabled(true);
+        setGlassEnabled(true);
+        setModal(true);
 
         setWidth("150px");
 
@@ -48,20 +53,18 @@ public class TaskPlanningActions extends PopupPanel {
     private void setActions() {
         setActionCancel();
         setActionModifyDuration();
-        setActionSuppressionTacke();
+        setActionSuppressionTache();
     }
 
-    private void setActionSuppressionTacke() {
+    private void setActionSuppressionTache() {
         btnSuppression.addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(final ClickEvent event) {
-                final boolean isSure = Window.confirm("Are you sure?");
-                if (isSure) {
-                    GWT.log("is sure " + isSure);
-                    // TODO PGU delete the tache and remove it from the priority queue
+                if (Window.confirm("Êtes-vous sûr?")) {
+                    planningGrid.removeTask(task);
+                    hide();
                 }
-                hide();
             }
         });
     }

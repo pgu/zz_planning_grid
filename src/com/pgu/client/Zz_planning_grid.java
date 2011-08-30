@@ -12,7 +12,6 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 
 /**
@@ -78,19 +77,14 @@ public class Zz_planning_grid implements EntryPoint {
         final FlowPanel sep = new FlowPanel();
         sep.setPixelSize(10, 100);
 
-        final ToolbarTasks ttasks = new ToolbarTasks(logText);
-        final PopupPanel pTasks = new PopupPanel(false, false);
-        pTasks.add(ttasks);
         RootPanel.get().add(sep);
-        //        RootPanel.get().add(pTasks);
         RootPanel.get().add(pg);
         RootPanel.get().add(logText);
 
         pg.setHourMarkers();
         pg.setPersonMarkers();
-        pg.setDropControllerFromTasks(ttasks.dragController);
 
-        pTasks.setPopupPosition(0, 0);
-        pTasks.show();
+        final ToolbarTaskContainer tasksPanel = new ToolbarTaskContainer(logText, pg);
+        tasksPanel.show();
     }
 }
