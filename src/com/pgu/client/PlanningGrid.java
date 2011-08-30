@@ -195,6 +195,8 @@ public class PlanningGrid extends Composite {
 
                 styleBg5min.setLeft(0, Unit.PX);
                 td.appendChild(bg5min.getElement());
+
+                bg5min.setTitle(PlanningHelper.colToHHmm(col));
             }
 
         }
@@ -391,7 +393,7 @@ public class PlanningGrid extends Composite {
         if (isOverlapping(copy)) {
             restoreTaskInternal(context, currentTask);
         } else {
-            setTaskOnPlanning(currentTask.cloneTask(colTask), context);
+            setTaskOnPlanning(copy, context);
         }
     }
 
@@ -429,6 +431,10 @@ public class PlanningGrid extends Composite {
         container.add(task);
 
         ////////////////////////////////////////////////////////////////////////////////
+        addTaskToPersonTasks(task);
+    }
+
+    private void addTaskToPersonTasks(final TaskPlanning task) {
         final Person person = getPersonFromRow(task.getRowTask());
         if (person2tasks.containsKey(person)) {
             person2tasks.get(person).add(getTaskPlanningDto(task));
@@ -492,12 +498,7 @@ public class PlanningGrid extends Composite {
                     if (end <= taskDto.getStartInMinutes()) {
                         continue;
                     } else {
-                        Window.alert("La tâche va empiéter sur une autre: \n" + //
-                                "start: " + start + "\n" + //
-                                "end: " + end + "\n" + //
-                                "p.start: " + taskDto.getStartInMinutes() + "\n" + //
-                                "p.end: " + taskDto.getEndInMinutes() + "\n" //
-                        );
+                        Window.alert("La tâche va empiéter sur \"" + taskDto.getLabel() + "\"");
                         return true;
                     }
                 }
@@ -506,4 +507,38 @@ public class PlanningGrid extends Composite {
         return false;
     }
 
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    final TaskPlanningActions taskActions = new TaskPlanningActions(this);
+
+    public void showTaskPlanningMenu(final TaskPlanning task) {
+        taskActions.showActions(task);
+    }
+
+    public boolean modifyDurationTask(final TaskPlanning task, final int newDuration) {
+
+        final int durationBackup = task.getDurationInMinutes();
+
+        removeTaskFromPersonTasks(task);
+
+        task.setDurationInMinutes(newDuration);
+
+        final boolean canBeModified = !isOverlapping(task);
+        if (canBeModified) {
+            refreshDuration(task);
+        } else {
+            task.setDurationInMinutes(durationBackup);
+        }
+
+        addTaskToPersonTasks(task);
+        return canBeModified;
+    }
+
+    private void refreshDuration(final TaskPlanning task) {
+        final Element tdHour = ruler_5min_fmt.getElement(PlanningGrid.ROW_RULER_HOURS, task.getColTask());
+
+        final Element tdHourEnd = ruler_5min_fmt.getElement(PlanningGrid.ROW_RULER_HOURS,
+                task.getColTask() + task.getDurationInMinutes() / 5);
+
+        task.getElement().getStyle().setWidth(tdHourEnd.getAbsoluteLeft() - tdHour.getAbsoluteLeft(), Unit.PX);
+    }
 }

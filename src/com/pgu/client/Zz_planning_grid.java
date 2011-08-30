@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 
 /**
@@ -62,7 +63,7 @@ public class Zz_planning_grid implements EntryPoint {
         PlanningHelper.setBorder(container, "blue");
         container.add(t);
 
-        RootPanel.get().add(container);
+        //        RootPanel.get().add(container);
         container.add(a);
         //        t.getFlexCellFormatter().getElement(0, 0).appendChild(fp.getElement());
         //        RootPanel.get().add(fp);
@@ -78,8 +79,10 @@ public class Zz_planning_grid implements EntryPoint {
         sep.setPixelSize(10, 100);
 
         final ToolbarTasks ttasks = new ToolbarTasks(logText);
+        final PopupPanel pTasks = new PopupPanel(false, false);
+        pTasks.add(ttasks);
         RootPanel.get().add(sep);
-        RootPanel.get().add(ttasks);
+        //        RootPanel.get().add(pTasks);
         RootPanel.get().add(pg);
         RootPanel.get().add(logText);
 
@@ -87,5 +90,7 @@ public class Zz_planning_grid implements EntryPoint {
         pg.setPersonMarkers();
         pg.setDropControllerFromTasks(ttasks.dragController);
 
+        pTasks.setPopupPosition(0, 0);
+        pTasks.show();
     }
 }

@@ -1,31 +1,26 @@
 package com.pgu.client;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class TaskPlanning extends HTML {
 
     private final Integer rowTask;
     private final Integer colTask;
-    private final int durationInMinutes;
     private final ToolbarTask task;
     private final String perimetre;
+    private final PlanningGrid planningGrid;
+    private int durationInMinutes;
 
     public TaskPlanning(final Integer rowTask, final Integer colTask, final int durationInMinutes,
-            final ToolbarTask task, final String perimetre) {
+            final ToolbarTask task, final String perimetre, final PlanningGrid planningGrid) {
         this.rowTask = rowTask;
         this.colTask = colTask;
         this.durationInMinutes = durationInMinutes;
         this.task = task;
         this.perimetre = perimetre;
+        this.planningGrid = planningGrid;
         setColors();
         showLabel();
         setClickHandler();
@@ -36,43 +31,7 @@ public class TaskPlanning extends HTML {
 
             @Override
             public void onClick(final ClickEvent event) {
-                final PopupPanel pop = new PopupPanel(false, true);
-                final VerticalPanel container = new VerticalPanel();
-                pop.add(container);
-                container.add(new Label("Modifier la durée (en minutes): "));
-                final TextBox inputDuree = new TextBox();
-                container.add(inputDuree);
-                inputDuree.setText(durationInMinutes + "");
-
-                final Button btnConfirm = new Button("Confirm");
-                container.add(btnConfirm);
-                final Button btnSuppression = new Button("Supprimer la tâche");
-                container.add(btnSuppression);
-
-                pop.show();
-                pop.center();
-
-                btnConfirm.addClickHandler(new ClickHandler() {
-
-                    @Override
-                    public void onClick(final ClickEvent event) {
-                        // TODO PGU modifier la cell, check it does not overlap
-                        pop.hide();
-                    }
-                });
-                btnSuppression.addClickHandler(new ClickHandler() {
-
-                    @Override
-                    public void onClick(final ClickEvent event) {
-                        final boolean isSure = Window.confirm("Are you sure?");
-                        if (isSure) {
-                            GWT.log("is sure " + isSure);
-                            // TODO PGU delete the tache and remove it from the priority queue
-                        }
-                        pop.hide();
-                    }
-                });
-
+                planningGrid.showTaskPlanningMenu(TaskPlanning.this);
             }
         });
     }
@@ -85,7 +44,7 @@ public class TaskPlanning extends HTML {
     }
 
     public TaskPlanning cloneTask(final int colTask) {
-        return new TaskPlanning(rowTask, colTask, durationInMinutes, task, perimetre);
+        return new TaskPlanning(rowTask, colTask, durationInMinutes, task, perimetre, planningGrid);
     }
 
     private void showLabel() {
@@ -109,20 +68,12 @@ public class TaskPlanning extends HTML {
         return 5 * colTask;
     }
 
-    public String getLabelHours() {
+    private String getLabelHours() {
         final int totalMin = getStartInMinutes();
-        return toStringHHmm(totalMin) //
+        return PlanningHelper.toStringHHmm(totalMin) //
                 + " - " //
-                + toStringHHmm(totalMin + durationInMinutes) //
+                + PlanningHelper.toStringHHmm(totalMin + durationInMinutes) //
         ;
-    }
-
-    public static String toStringHHmm(final int totalMin) {
-        final int hour = totalMin / 60;
-        final int min = totalMin % 60;
-        final String minRestantes = (min < 10 ? "0" : "") + Integer.toString(min);
-
-        return hour + ":" + minRestantes;
     }
 
     public Integer getRowTask() {
@@ -147,6 +98,11 @@ public class TaskPlanning extends HTML {
 
     public int getEndInMinutes() {
         return getStartInMinutes() + durationInMinutes;
+    }
+
+    public void setDurationInMinutes(final int durationInMinutes) {
+        this.durationInMinutes = durationInMinutes;
+        showLabel();
     }
 
 }

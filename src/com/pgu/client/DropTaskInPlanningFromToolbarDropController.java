@@ -97,7 +97,7 @@ public class DropTaskInPlanningFromToolbarDropController extends SimpleDropContr
 
                 final TaskPlanning taskPlanning = new TaskPlanning(rowTask, colTask, //
                         calculDurationInMinutes(selectedFamille), // 
-                        currentTask, selectedFamille);
+                        currentTask, selectedFamille, planningGrid);
                 planningGrid.dropTaskInPlanning(taskPlanning, context);
             }
 
