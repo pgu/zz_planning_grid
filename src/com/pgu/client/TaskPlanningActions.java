@@ -20,6 +20,7 @@ public class TaskPlanningActions extends PopupPanel {
     final FlowPanel container = new FlowPanel();
     final Button btnCancel = new Button("Annuler");
     final Button btnConfirm = new Button("Confirm");
+    final Button btnReplanifier = new Button("A replanifier");
     final Button btnSuppression = new Button("Supprimer la tâche");
 
     PlanningGrid planningGrid;
@@ -41,9 +42,15 @@ public class TaskPlanningActions extends PopupPanel {
         setTitle();
         setModificationDuration();
         setUISeparator();
+        setReplanifierTache();
+        setUISeparator();
         setSuppressionTache();
 
         setActions();
+    }
+
+    private void setReplanifierTache() {
+        container.add(btnReplanifier);
     }
 
     private void setSuppressionTache() {
@@ -54,6 +61,21 @@ public class TaskPlanningActions extends PopupPanel {
         setActionCancel();
         setActionModifyDuration();
         setActionSuppressionTache();
+        setActionReplanificationTache();
+    }
+
+    private void setActionReplanificationTache() {
+        btnReplanifier.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(final ClickEvent event) {
+                if (Window.confirm("Êtes-vous sûr?")) {
+                    planningGrid.replanifierTask(task);
+                    planningGrid.removeTask(task);
+                    hide();
+                }
+            }
+        });
     }
 
     private void setActionSuppressionTache() {

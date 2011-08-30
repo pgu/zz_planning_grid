@@ -562,4 +562,9 @@ public class PlanningGrid extends Composite {
     public void setToolbarTaskContainer(final ToolbarTaskContainer tasksPanel) {
         toolbarTaskContainer = tasksPanel;
     }
+
+    public void replanifierTask(final TaskPlanning task) {
+        final ToolbarTask task2 = task.getTask();
+        toolbarTaskContainer.taskRestantes.put(task2.label.getText(), task2.getBgColor());
+    }
 }
