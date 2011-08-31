@@ -144,9 +144,10 @@ public class PlanningGrid extends Composite {
 
         for (int col = 0; col < NB_COL; col++) {
 
-            final Element td = ruler_5min_fmt.getElement(ROW_RULER_HOURS, col);
+            // final Element td = ruler_5min_fmt.getElement(ROW_RULER_HOURS, col); do not use it, FF does not take into account a "relative" td
+            final FlowPanel div = (FlowPanel) ruler_5min.getWidget(ROW_RULER_HOURS, col);
 
-            td.getStyle().setPosition(Position.RELATIVE);
+            div.getElement().getStyle().setPosition(Position.RELATIVE);
 
             if (isStartingHour(col)) {
                 final FlowPanel hourHeaderSep = new FlowPanel();
@@ -157,7 +158,7 @@ public class PlanningGrid extends Composite {
                 styleSp.setWidth(1, Unit.PX);
                 styleSp.setHeight(heightHours, Unit.PX);
                 styleSp.setBackgroundColor("white");
-                td.appendChild(hourHeaderSep.getElement());
+                div.add(hourHeaderSep);
 
                 final FlowPanel hourHeader = new FlowPanel();
                 final Style styleH = hourHeader.getElement().getStyle();
@@ -168,7 +169,7 @@ public class PlanningGrid extends Composite {
                 styleH.setHeight(heightHours, Unit.PX);
                 styleH.setColor("white");
                 styleH.setBackgroundColor("blue");
-                td.appendChild(hourHeader.getElement());
+                div.add(hourHeader);
 
                 final Label hourLabel = new Label(col / NB_COL_BY_HOUR + ":00");
                 final Style styleL = hourLabel.getElement().getStyle();
@@ -184,7 +185,7 @@ public class PlanningGrid extends Composite {
                 styleSpBody.setWidth(1, Unit.PX);
                 styleSpBody.setHeight(heightBody, Unit.PX);
                 styleSpBody.setBackgroundColor("blue");
-                td.appendChild(hourSepBody.getElement());
+                div.add(hourSepBody);
 
             } else if (isHalfHour(col)) {
                 final FlowPanel halfHourSepBody = new FlowPanel();
@@ -195,7 +196,7 @@ public class PlanningGrid extends Composite {
                 styleSpHalfBody.setWidth(1, Unit.PX);
                 styleSpHalfBody.setHeight(heightBody, Unit.PX);
                 styleSpHalfBody.setBackgroundColor("lightgrey");
-                td.appendChild(halfHourSepBody.getElement());
+                div.add(halfHourSepBody);
 
             } else if (is5minSpan(col)) {
 
@@ -208,7 +209,7 @@ public class PlanningGrid extends Composite {
                 styleBg5min.setWidth(width5min, Unit.PX);
 
                 styleBg5min.setLeft(0, Unit.PX);
-                td.appendChild(bg5min.getElement());
+                div.add(bg5min);
 
                 bg5min.setTitle(PlanningHelper.colToHHmm(col));
             }
@@ -257,8 +258,10 @@ public class PlanningGrid extends Composite {
         final int widthHours = ruler_5min.getElement().getOffsetWidth();
 
         for (final Integer rowSep1 : rowsSep1) {
-            final Element td = ruler_persons_fmt.getElement(rowSep1, COL_RULER_PERSONS);
-            td.getStyle().setPosition(Position.RELATIVE);
+            //            final Element td = ruler_persons_fmt.getElement(rowSep1, COL_RULER_PERSONS); # FF issue
+            final FlowPanel div = (FlowPanel) ruler_persons.getWidget(rowSep1, COL_RULER_PERSONS);
+
+            div.getElement().getStyle().setPosition(Position.RELATIVE);
 
             final FlowPanel sep = new FlowPanel();
             final Style style = sep.getElement().getStyle();
@@ -268,12 +271,14 @@ public class PlanningGrid extends Composite {
             style.setHeight(1, Unit.PX);
             style.setBackgroundColor("#a9a9a9");
             style.setWidth(widthHours, Unit.PX);
-            td.appendChild(sep.getElement());
+            div.add(sep);
         }
 
         for (final Integer rowSep2 : rowsSep2) {
-            final Element td = ruler_persons_fmt.getElement(rowSep2, COL_RULER_PERSONS);
-            td.getStyle().setPosition(Position.RELATIVE);
+            //            final Element td = ruler_persons_fmt.getElement(rowSep2, COL_RULER_PERSONS); # FF issue
+            final FlowPanel div = (FlowPanel) ruler_persons.getWidget(rowSep2, COL_RULER_PERSONS);
+
+            div.getElement().getStyle().setPosition(Position.RELATIVE);
 
             final FlowPanel sep = new FlowPanel();
             final Style style = sep.getElement().getStyle();
@@ -283,7 +288,7 @@ public class PlanningGrid extends Composite {
             style.setHeight(1, Unit.PX);
             style.setBackgroundColor("lightgrey");
             style.setWidth(widthHours, Unit.PX);
-            td.appendChild(sep.getElement());
+            div.add(sep);
         }
 
     }
