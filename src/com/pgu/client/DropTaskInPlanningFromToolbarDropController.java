@@ -95,10 +95,20 @@ public class DropTaskInPlanningFromToolbarDropController extends SimpleDropContr
 
                 pop.removeFromParent();
 
-                final TaskPlanning taskPlanning = new TaskPlanning(rowTask, colTask, //
-                        calculDurationInMinutes(selectedFamille), // 
-                        currentTask, selectedFamille, planningGrid);
-                planningGrid.dropTaskInPlanning(taskPlanning, context);
+                final int duration = calculDurationInMinutes(selectedFamille);
+                final int start = PlanningHelper.colToMinutes(colTask);
+
+                if (PlanningHelper.fitsInPlanningHours(start, duration)) {
+                    final TaskPlanning taskPlanning = new TaskPlanning(rowTask, colTask, //
+                            duration, // 
+                            currentTask, selectedFamille, planningGrid);
+                    planningGrid.dropTaskInPlanning(taskPlanning, context);
+                } else {
+                    Window.alert("La tâche ne peut pas être contenue dans la journée" + //
+                            " pour le début " + PlanningHelper.toStringHHmm(start) + //
+                            " et la famille " + selectedFamille + //
+                            " (durée de " + PlanningHelper.toStringHHmm(duration) + ")");
+                }
             }
 
         });

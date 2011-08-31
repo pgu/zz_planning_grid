@@ -105,13 +105,19 @@ public class TaskPlanningActions extends PopupPanel {
                     return;
                 }
 
-                if (duration != task.getDurationInMinutes()) {
+                if (duration == task.getDurationInMinutes()) {
+                    hide();
+                    return;
+                }
 
-                    final boolean isModified = planningGrid.modifyDurationTask(task, duration);
-                    if (isModified) {
-                        hide();
-                    }
-                } else {
+                final int start = PlanningHelper.colToMinutes(task.getColTask());
+                if (!PlanningHelper.fitsInPlanningHours(start, duration)) {
+                    Window.alert("La tâche ne peut pas être contenue dans la journée");
+                    return;
+                }
+
+                final boolean isModified = planningGrid.modifyDurationTask(task, duration);
+                if (isModified) {
                     hide();
                 }
             }

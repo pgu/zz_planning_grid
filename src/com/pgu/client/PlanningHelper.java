@@ -7,6 +7,10 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class PlanningHelper {
 
+    private PlanningHelper() {
+        throw new UnsupportedOperationException();
+    }
+
     public static void setBorder(final Widget w, final String color) {
         final Style style = w.getElement().getStyle();
         style.setBorderColor(color);
@@ -14,8 +18,12 @@ public class PlanningHelper {
         style.setBorderWidth(1, Unit.PX);
     }
 
+    public static int colToMinutes(final int col) {
+        return col * 5;
+    }
+
     public static String colToHHmm(final int col) {
-        return toStringHHmm(col * 5);
+        return toStringHHmm(colToMinutes(col));
     }
 
     public static String toStringHHmm(final int totalMin) {
@@ -24,6 +32,10 @@ public class PlanningHelper {
         final String minRestantes = (min < 10 ? "0" : "") + Integer.toString(min);
 
         return hour + ":" + minRestantes;
+    }
+
+    public static boolean fitsInPlanningHours(final int start, final int duration) {
+        return start + duration <= PlanningGrid.NB_HOURS * 60;
     }
 
 }

@@ -71,7 +71,7 @@ public class TaskPlanning extends HTML {
     }
 
     public int getStartInMinutes() {
-        return 5 * colTask;
+        return PlanningHelper.colToMinutes(colTask);
     }
 
     private String getLabelHours() {

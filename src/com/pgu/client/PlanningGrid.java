@@ -325,6 +325,18 @@ public class PlanningGrid extends Composite {
             } else if (mX > right) {
                 low = mid + 1;
             } else {
+                if (X == null) {
+                    return mid; // correspond au pointer de la souris
+                }
+
+                if (mid == ruler_5min.getCellCount(PlanningGrid.ROW_RULER_HOURS) - 1) { // last column
+                    return mid; // c'est la derniere colonne
+                }
+
+                if (right - X < 3) { // sensibility a 2 pixels
+                    return mid + 1;
+                }
+
                 return mid;
             }
 
@@ -417,15 +429,14 @@ public class PlanningGrid extends Composite {
         style.setPosition(Position.ABSOLUTE);
         style.setTop(tdPerson.getAbsoluteTop() - container.getAbsoluteTop(), Unit.PX);
 
-        final Element tdHour = ruler_5min_fmt.getElement(PlanningGrid.ROW_RULER_HOURS, task.getColTask());
-        style.setLeft(tdHour.getAbsoluteLeft() - tdPerson.getAbsoluteLeft(), Unit.PX);
+        final int leftStart = getLeftStart(task);
+        style.setLeft(leftStart - tdPerson.getAbsoluteLeft(), Unit.PX);
 
         style.setHeight(tdPerson.getOffsetHeight(), Unit.PX);
 
-        final Element tdHourEnd = ruler_5min_fmt.getElement(PlanningGrid.ROW_RULER_HOURS,
-                task.getColTask() + task.getDurationInMinutes() / 5);
+        final int leftEnd = getLeftEnd(task);
 
-        style.setWidth(tdHourEnd.getAbsoluteLeft() - tdHour.getAbsoluteLeft(), Unit.PX);
+        style.setWidth(leftEnd - leftStart, Unit.PX);
 
         planningDragController.makeDraggable(task);
 
@@ -435,6 +446,19 @@ public class PlanningGrid extends Composite {
         addTaskToPersonTasks(task);
 
         toolbarTaskContainer.cleanTaskRestantesAfterSuccessfulDrop();
+    }
+
+    private int getLeftEnd(final TaskPlanning task) {
+        final int column = task.getColTask() + task.getDurationInMinutes() / 5;
+        if (column < NB_COL) {
+            return ruler_5min_fmt.getElement(PlanningGrid.ROW_RULER_HOURS, column).getAbsoluteLeft();
+        } else {
+            return ruler_5min_fmt.getElement(PlanningGrid.ROW_RULER_HOURS, NB_COL - 1).getAbsoluteRight();
+        }
+    }
+
+    private int getLeftStart(final TaskPlanning task) {
+        return ruler_5min_fmt.getElement(PlanningGrid.ROW_RULER_HOURS, task.getColTask()).getAbsoluteLeft();
     }
 
     private void addTaskToPersonTasks(final TaskPlanning task) {
@@ -537,12 +561,10 @@ public class PlanningGrid extends Composite {
     }
 
     private void refreshDuration(final TaskPlanning task) {
-        final Element tdHour = ruler_5min_fmt.getElement(PlanningGrid.ROW_RULER_HOURS, task.getColTask());
+        final int leftStart = getLeftStart(task);
+        final int leftEnd = getLeftEnd(task);
 
-        final Element tdHourEnd = ruler_5min_fmt.getElement(PlanningGrid.ROW_RULER_HOURS,
-                task.getColTask() + task.getDurationInMinutes() / 5);
-
-        task.getElement().getStyle().setWidth(tdHourEnd.getAbsoluteLeft() - tdHour.getAbsoluteLeft(), Unit.PX);
+        task.getElement().getStyle().setWidth(leftEnd - leftStart, Unit.PX);
     }
 
     public void removeTask(final TaskPlanning task) {
@@ -579,4 +601,5 @@ public class PlanningGrid extends Composite {
         toolbarTaskContainer.taskRestantes.put(sb.toString(), task2.getBgColor());
         toolbarTaskContainer.refreshTaskRestantes();
     }
+
 }
