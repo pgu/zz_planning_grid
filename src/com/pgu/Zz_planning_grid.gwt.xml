@@ -13,6 +13,7 @@
 
   <!-- Other module inherits                                      -->
 <inherits name='com.allen_sauer.gwt.dnd.gwt-dnd' />
+<inherits name="com.google.gwt.resources.Resources" />
   <!-- Specify the app entry point class.                         -->
   <entry-point class='com.pgu.client.Zz_planning_grid'/>
 

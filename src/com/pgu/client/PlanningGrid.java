@@ -1,6 +1,7 @@
 package com.pgu.client;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
@@ -46,7 +48,7 @@ public class PlanningGrid extends Composite {
     FlexCellFormatter ruler_persons_fmt;
 
     HTML logText;
-    FlowPanel contour = new FlowPanel();
+    AbsolutePanel contour = new AbsolutePanel();
     private final PickupDragController planningDragController;
 
     public PlanningGrid(final List<Person> persons, final HTML logText) {
@@ -108,7 +110,7 @@ public class PlanningGrid extends Composite {
 
         // /////////////////////////
 
-        planningDragController = new PickupDragController(container, true);
+        planningDragController = new PickupDragController(contour, true);
         planningDragController.setBehaviorMultipleSelection(false);
         planningDragController.setBehaviorDragProxy(false);
         planningDragController.setBehaviorScrollIntoView(true);
@@ -117,7 +119,7 @@ public class PlanningGrid extends Composite {
         planningDragController.setBehaviorDragStartSensitivity(1);
 
         planningDragController.unregisterDropControllers();
-        planningDragController.registerDropController(new MoveTaskInRowDropController(container, this));
+        planningDragController.registerDropController(new MoveTaskInRowDropController(contour, this));
 
     }
 
@@ -563,8 +565,18 @@ public class PlanningGrid extends Composite {
         toolbarTaskContainer = tasksPanel;
     }
 
+    DateTimeFormat fmt = DateTimeFormat.getFormat("dd/MM");
+
     public void replanifierTask(final TaskPlanning task) {
         final ToolbarTask task2 = task.getTask();
-        toolbarTaskContainer.taskRestantes.put(task2.label.getText(), task2.getBgColor());
+        final StringBuilder sb = new StringBuilder();
+        sb.append(task2.label.getText());
+        sb.append("/");
+        sb.append(getPersonFromRow(task.getRowTask()).getName());
+        sb.append(" - ");
+        sb.append(fmt.format(new Date()));
+
+        toolbarTaskContainer.taskRestantes.put(sb.toString(), task2.getBgColor());
+        toolbarTaskContainer.refreshTaskRestantes();
     }
 }

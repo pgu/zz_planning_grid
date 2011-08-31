@@ -87,8 +87,8 @@ public class Zz_planning_grid implements EntryPoint {
         pg.setPersonMarkers();
 
         final Map<String, String> taskRestantes = new LinkedHashMap<String, String>();
-        taskRestantes.put("Inventaire", "#CC00CC");
-        taskRestantes.put("Montage", "#CCFFCC");
+        taskRestantes.put("Inventaire/John Doe - 12/03", "#CC00CC");
+        taskRestantes.put("Montage/Jane Doe - 11/03", "#CCFFCC");
 
         final Map<String, String> taskDuJours = new LinkedHashMap<String, String>();
         taskDuJours.put("Audit de prix", "#009900");
@@ -96,12 +96,27 @@ public class Zz_planning_grid implements EntryPoint {
         taskDuJours.put("Montage TG", "#AAAAAA");
         taskDuJours.put("Pose des labels", "#FF9900");
         taskDuJours.put("Réimplantation", "#000000");
+        taskDuJours.put("_Audit de prix", "#009900");
+        taskDuJours.put("_Inventaire tournant", "#0099FF");
+        taskDuJours.put("_Montage TG", "#AAAAAA");
+        taskDuJours.put("_Pose des labels", "#FF9900");
+        taskDuJours.put("_Réimplantation", "#000000");
+        taskDuJours.put("__Audit de prix", "#009900");
+        taskDuJours.put("__Inventaire tournant", "#0099FF");
+        taskDuJours.put("__Montage TG", "#AAAAAA");
+        taskDuJours.put("__Pose des labels", "#FF9900");
+        taskDuJours.put("__Réimplantation", "#000000");
+        taskDuJours.put("___Audit de prix", "#009900");
+        taskDuJours.put("___Inventaire tournant", "#0099FF");
+        taskDuJours.put("___Montage TG", "#AAAAAA");
+        taskDuJours.put("___Pose des labels", "#FF9900");
+        taskDuJours.put("___Réimplantation", "#000000");
 
         final ToolbarTaskContainer tasksPanel = new ToolbarTaskContainer(logText, pg);
         pg.setToolbarTaskContainer(tasksPanel);
 
-        tasksPanel.setTaskRestantes(taskRestantes);
         tasksPanel.setTaskManuelles(taskDuJours);
+        tasksPanel.setTaskRestantes(taskRestantes);
         tasksPanel.show();
     }
 }

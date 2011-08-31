@@ -1,5 +1,6 @@
 package com.pgu.client;
 
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.HTML;
@@ -15,6 +16,7 @@ public class TaskPlanning extends HTML {
 
     public TaskPlanning(final Integer rowTask, final Integer colTask, final int durationInMinutes,
             final ToolbarTask task, final String perimetre, final PlanningGrid planningGrid) {
+        MyResources.INSTANCE.css().ensureInjected();
         this.rowTask = rowTask;
         this.colTask = colTask;
         this.durationInMinutes = durationInMinutes;
@@ -37,9 +39,13 @@ public class TaskPlanning extends HTML {
     }
 
     private void setColors() {
-        getElement().getStyle().setBackgroundColor(task.getBgColor());
+        final Style style = getElement().getStyle();
+
+        addStyleName(MyResources.INSTANCE.css().taskPlanning());
+
+        style.setBackgroundColor(task.getBgColor());
         if (task.isBgDark()) {
-            getElement().getStyle().setColor("white");
+            style.setColor("white");
         }
     }
 
